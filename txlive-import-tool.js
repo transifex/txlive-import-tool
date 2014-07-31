@@ -10,6 +10,9 @@ var settings = {
   tx_url: "https://www.transifex.com"
 }
 
+/**
+ * Runs phantomjs in order to extract source strings
+ */
 function runPhantomJs(callback) {
   var childArgs = [
     '--ignore-ssl-errors=true',
@@ -25,6 +28,9 @@ function runPhantomJs(callback) {
   });
 }
 
+/**
+ * Create request options depending if we update or create the resource
+ */
 function createOptions(content, update) {
   var options = {
     host: settings.host,
@@ -57,7 +63,8 @@ function createOptions(content, update) {
 }
 
 /**
- *
+ * Create resource with specified content. It will be created with TX
+ * type.
  */
 function createResource(content) {
   var protocol = null;
@@ -84,7 +91,9 @@ function createResource(content) {
 }
 
 /**
- *
+ * Update resource with specified content. Assuming that the resource if
+ * exists will have a TX compatible type. If resource doesn't exist we create
+ * it.
  */
 function updateResource(content) {
   console.log(
@@ -113,7 +122,7 @@ function updateResource(content) {
 }
 
 /**
- *
+ * Try to extract needed parameters
  */
 function init(callback) {
   var argv = process.argv.slice(2);
@@ -141,13 +150,7 @@ function init(callback) {
     }
   )
 }
-/**
- *
- */
-function main() {
-  init(function(){
-    runPhantomJs(updateResource);
-  });
-}
 
-main();
+init(function(){
+  runPhantomJs(updateResource);
+});
