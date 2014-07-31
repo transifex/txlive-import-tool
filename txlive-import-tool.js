@@ -7,7 +7,7 @@ var read = require('read')
 var url = require('url');
 
 var settings = {
-  tx_url: "http://www.tx.com:8000"
+  tx_url: "https://www.transifex.com"
 }
 
 function runPhantomJs(callback) {
