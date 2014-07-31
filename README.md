@@ -12,4 +12,4 @@ Install node.js dependencies
 - npm install
 
 Run
-- node txlive-import-tool.js <url> <project slug> <resource slug> <username>
+- node txlive-import-tool.js url project_slug resource_slug username
