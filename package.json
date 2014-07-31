@@ -1,0 +1,36 @@
+{
+  "name": "txlive-import-tool",
+  "version": "0.0.1",
+  "keywords": [
+    "transifex",
+    "txlive"
+  ],
+  "description": "Import tool for transifex live",
+  "homepage": "https://www.transifex.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/transifex/txlive-import-tool"
+  },
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  ],
+  "author": {
+    "name": "Christos Amanatidis",
+    "email": "christos@transifex.com"
+  },
+  "maintainers": [
+    {
+      "name": "Nikos Vasileiou",
+      "email": "nikosv@transifex.com"
+    }
+  ],
+  "main": "txlive-import-tool.js",
+  "dependencies": {
+    "phantomjs": "1.9.7-15",
+    "read": "1.0.5"
+  },
+  "readmeFilename": "README.md"
+}

@@ -1,0 +1,19 @@
+var system = require('system');
+var args = system.args;
+var page = require('webpage').create();
+var address = args[1];
+
+page.open(address, function(status) {
+  var result = page.evaluate(function() {
+    var segments = window.Transifex.live.segments;
+    var result = {};
+    for (var key in segments) {
+      var segment = segments[key];
+      result[segment.key] = segment.source_string;
+    }
+    return result;
+  });
+  console.log(JSON.stringify(result));
+  phantom.exit();
+});
+
