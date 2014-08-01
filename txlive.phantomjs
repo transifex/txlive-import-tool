@@ -3,13 +3,25 @@ var args = system.args;
 var page = require('webpage').create();
 var address = args[1];
 
+page.onInitialized = function() {
+  page.evaluate(function() {
+    if (!window.Transifex || !window.Transifex.live)
+      document.write('<script src="//cdn.transifex.com/live.js"></script>');
+  });
+}
+
 page.open(address, function(status) {
+  if (status === "fail")
+     phantom.exit(1);
   var result = page.evaluate(function() {
-    var segments = window.Transifex.live.segments;
-    var result = {};
-    for (var key in segments) {
-      var segment = segments[key];
-      result[segment.key] = segment.source_string;
+    var result = [];
+    var segments = window.Transifex.live.segment_list;
+    for (var i in segments) {
+      var segment = segments[i];
+      result.push({
+        key: segment.key,
+        source_string: segment.source_string
+      });
     }
     return result;
   });

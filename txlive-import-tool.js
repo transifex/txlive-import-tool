@@ -1,31 +1,11 @@
-var childProcess = require('child_process');
 var http = require('http');
 var https = require('https');
-var path = require('path');
-var phantomjs = require('phantomjs');
 var read = require('read')
 var url = require('url');
+var util = require('./util');
 
 var settings = {
   tx_url: "https://www.transifex.com"
-}
-
-/**
- * Runs phantomjs in order to extract source strings
- */
-function runPhantomJs(callback) {
-  var childArgs = [
-    '--ignore-ssl-errors=true',
-    '--ssl-protocol=any',
-    path.join(__dirname, 'txlive.phantomjs'),
-    settings.url
-  ]
-
-  console.log("Running live on " + settings.url);
-  childProcess.execFile(phantomjs.path, childArgs, function(e, stdout, stderr) {
-    var result = JSON.parse(stdout);
-    callback(result);
-  });
 }
 
 /**
@@ -47,7 +27,7 @@ function createOptions(content, update) {
     options.data = JSON.stringify({
       name: settings.resource_slug,
       slug: settings.resource_slug,
-      i18n_type: 'TX',
+      i18n_type: 'KEYVALUEJSON',
       content: JSON.stringify(content)
     });
   }
@@ -96,6 +76,11 @@ function createResource(content) {
  * it.
  */
 function updateResource(content) {
+  var t = {};
+  for (var i in content)
+    t[content[i].key] = content[i].source_string;
+  content = t;
+
   console.log(
     "Updating resource " + settings.project_slug + "." + settings.resource_slug +
     " on " + settings.tx_url
@@ -103,19 +88,18 @@ function updateResource(content) {
   var options = createOptions(content, true);
   var request = http.request(options, function(response) {
     response.setEncoding('UTF-8');
-    if (response.statusCode == 404) {
-      console.log("Resource doesn't exist. Creating...");
-      createResource(content);
-      return;
-    }
     var s = '';
     response.on('data', function(data) {
       s += data;
     });
     response.on('end', function() {
-      if (response.statusCode >= 400)
+      if (response.statusCode >= 400 && response.statusCode != 404)
         console.log(s);
     });
+    if (response.statusCode == 404) {
+      console.log("Resource doesn't exist. Creating...");
+      createResource(content);
+    }
   });
   request.write(options.data);
   request.end();
@@ -152,5 +136,5 @@ function init(callback) {
 }
 
 init(function(){
-  runPhantomJs(updateResource);
+  util.runPhantomJs(settings.url, updateResource);
 });
