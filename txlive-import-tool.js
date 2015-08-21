@@ -110,8 +110,8 @@ function updateResource(content) {
  */
 function init(callback) {
   var argv = process.argv.slice(2);
-  if (argv.length != 4) {
-    console.log("Syntax: node txlive-import-tool.js <url> <project slug> <resource slug> <username>");
+  if (argv.length < 4) {
+    console.log("Syntax: node txlive-import-tool.js <url> <project slug> <resource slug> <username> [<password>]");
     return;
   }
 
@@ -123,16 +123,22 @@ function init(callback) {
   settings.project_slug = argv[1];
   settings.resource_slug = argv[2];
   settings.username = argv[3];
-  read(
-    {
-      prompt: 'Password for ' + settings.protocol + "//" + settings.username + '@' + url_info.host + ": ",
-      silent: true
-    },
-    function(e, password) {
-      settings.password = password;
-      callback();
-    }
-  )
+  if (argv[4]) {
+    settings.password = argv[4];
+    callback();
+  }
+  else {
+    read(
+      {
+        prompt: 'Password for ' + settings.protocol + "//" + settings.username + '@' + url_info.host + ": ",
+        silent: true
+      },
+      function(e, password) {
+        settings.password = password;
+        callback();
+      }
+    )
+  }
 }
 
 init(function(){

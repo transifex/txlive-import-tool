@@ -25,7 +25,6 @@ page.open(address, function(status) {
     }
     return result;
   });
-  console.log(JSON.stringify(result));
+  console.log('[LIVE_EXPORT_BEGIN]' + JSON.stringify(result) + '[LIVE_EXPORT_END]');
   phantom.exit();
 });
-
