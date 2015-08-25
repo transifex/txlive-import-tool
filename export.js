@@ -34,7 +34,7 @@ function runOnTranslations(sourceContent, sourceXPaths, callback) {
     for (var xpath in translationXPaths) {
       var key = sourceXPaths[xpath];
       if (key) {
-        result[key] = translationContent[translationXPaths[xpath]];
+        result[sourceContent[key]] = translationContent[translationXPaths[xpath]];
       }
       else {
         console.log(
