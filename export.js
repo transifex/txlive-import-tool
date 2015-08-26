@@ -34,7 +34,12 @@ function runOnTranslations(sourceContent, sourceXPaths, callback) {
     for (var xpath in translationXPaths) {
       var key = sourceXPaths[xpath];
       if (key) {
-        result[sourceContent[key]] = translationContent[translationXPaths[xpath]];
+        if (sourceContent[key] == translationContent[translationXPaths[xpath]]) {
+          console.log('Translation and source content are the same: ' + sourceContent[key]);
+        }
+        else {
+          result[sourceContent[key]] = translationContent[translationXPaths[xpath]];
+        }
       }
       else {
         console.log(
