@@ -6,8 +6,7 @@ var address = args[1];
 page.onInitialized = function() {
   page.evaluate(function() {
     if (!window.Transifex || !window.Transifex.live) {
-      //document.write('<script src="//cdn.transifex.com/live.js"></script>');
-      document.write('<script src="//s3.amazonaws.com/tx-live-dev/live.js"></script>');
+      document.write('<script src="//cdn.transifex.com/live.js"></script>');
     }
   });
 }
