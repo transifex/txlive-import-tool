@@ -75,12 +75,7 @@ function createResource(content) {
  * exists will have a TX compatible type. If resource doesn't exist we create
  * it.
  */
-function updateResource(content) {
-  var t = {};
-  for (var i in content)
-    t[content[i].key] = content[i].source_string;
-  content = t;
-
+function updateResource(content, xpaths) {
   console.log(
     "Updating resource " + settings.project_slug + "." + settings.resource_slug +
     " on " + settings.tx_url

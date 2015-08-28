@@ -5,26 +5,28 @@ var address = args[1];
 
 page.onInitialized = function() {
   page.evaluate(function() {
-    if (!window.Transifex || !window.Transifex.live)
+    if (!window.Transifex || !window.Transifex.live) {
       document.write('<script src="//cdn.transifex.com/live.js"></script>');
+    }
   });
 }
 
 page.open(address, function(status) {
   if (status === "fail")
      phantom.exit(1);
-  var result = page.evaluate(function() {
-    var result = [];
+  var strings = page.evaluate(function() {
+    var result = {};
     var segments = window.Transifex.live.segment_list;
     for (var i in segments) {
       var segment = segments[i];
-      result.push({
-        key: segment.key,
-        source_string: segment.source_string
-      });
+      result[segment.key] = segment.source_string;
     }
     return result;
   });
-  console.log('[LIVE_EXPORT_BEGIN]' + JSON.stringify(result) + '[LIVE_EXPORT_END]');
+  var xpaths = page.evaluate(function() {
+    return window.Transifex.live._.getSegmentsXPaths();
+  });
+  console.log('[LIVE_EXPORT_BEGIN]' + JSON.stringify(strings) + '[LIVE_EXPORT_END]');
+  console.log('[LIVE_XPATH_BEGIN]' + JSON.stringify(xpaths) + '[LIVE_XPATH_END]');
   phantom.exit();
 });
