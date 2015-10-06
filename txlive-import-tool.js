@@ -27,7 +27,7 @@ function createOptions(content, update) {
     options.data = JSON.stringify({
       name: settings.resource_slug,
       slug: settings.resource_slug,
-      i18n_type: 'KEYVALUEJSON',
+      i18n_type: 'TX',
       content: JSON.stringify(content)
     });
   }
