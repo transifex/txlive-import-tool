@@ -16,7 +16,7 @@ page.open(address, function(status) {
      phantom.exit(1);
   var strings = page.evaluate(function() {
     var result = {};
-    var segments = window.Transifex.live.segment_list;
+    var segments = window.Transifex.live.segments;
     for (var i in segments) {
       var segment = segments[i];
       result[segment.key] = segment.source_string;
